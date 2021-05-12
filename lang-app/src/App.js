@@ -6,6 +6,8 @@ import Dashboard from './components/Dashboard/Dashboard';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Library from './components/Library/Library';
 import Learn from './components/Learn/Learn';
+import Games from './components/Games/Games';
+import WriteIt from './components/Games/AppGames/WriteIt';
 
 function App() {
   const [library, setLibrary] = useState(JSON.parse(localStorage.getItem('library')) || [])
@@ -30,6 +32,12 @@ function App() {
         </Route>
         <Route path='/library'>
           <Library library={library} setLibrary={setLibrary} />
+        </Route>
+        <Route path='/games'>
+          <Games />
+        </Route>
+        <Route path='/game/write-it'>
+          <WriteIt />
         </Route>
         <Route path='/learn'>
           <div className={styles.progressBarContainer}>
