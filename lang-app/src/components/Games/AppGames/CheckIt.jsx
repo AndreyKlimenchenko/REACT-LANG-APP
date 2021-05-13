@@ -1,10 +1,13 @@
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useState, useMemo, useContext} from 'react';
+import Store from './../../../context';
 import styles from './AppGames.module.css';
 
 
-const CheckIt = ({setWordIndex, wordIndex, playWords, errorWords, setErrorWords, correctWords, setCorrectWords, speak}) => {
+const CheckIt = ({setWordIndex, wordIndex, speak}) => {
     
-    const randomWords = useMemo(() => playWords.sort(() => Math.random() - 0.5), [])
+    const data = useContext(Store)
+
+    const randomWords = useMemo(() => data.playWords.sort(() => Math.random() - 0.5), [])
 
     const [currentWords, setCurrentWords] = useState(['random', 'correct', 'random2'])
     useEffect(() => {
@@ -13,19 +16,19 @@ const CheckIt = ({setWordIndex, wordIndex, playWords, errorWords, setErrorWords,
             randomWords[(wordIndex + 1)%randomWords.length].word,
             randomWords[(wordIndex + 2)%randomWords.length].word
         ].sort(() => Math.random() - 0.5))
-    }, [correctWords])
+    }, [data.correctWords])
 
     const checkWord = (word) => {
         if(word === randomWords[wordIndex].word) {
             speak(randomWords[wordIndex].translate)
-            setCorrectWords(correctWords + 1)
-            if(wordIndex !== playWords.length - 1) {
+            data.setCorrectWords(data.correctWords + 1)
+            if(wordIndex !== data.playWords.length - 1) {
                 setWordIndex(wordIndex + 1)
             } else {
                 alert('Game is over')
             }
         } else {
-            setErrorWords(errorWords + 1)
+            data.setErrorWords(data.errorWords + 1)
         }
     }
     return (
